@@ -1,0 +1,9 @@
+llama-index
+llama-index-llms-ollama
+llama-index-embeddings-ollama
+duckdb
+llama-index-vector-stores-duckdb
+httpx
+requests
+numpy
+pandas

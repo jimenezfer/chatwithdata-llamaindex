@@ -1,0 +1,6 @@
+{
+  "memory_limit": "1GB",
+  "threads": 4,
+  "max_memory": "80%",
+  "temp_directory": "/tmp"
+}
