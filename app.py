@@ -1,4 +1,4 @@
-from llama_index.core import VectorStoreIndex, SimpleDirectoryReader, Settings
+from llama_index.core import VectorStoreIndex, Settings
 from llama_index.core.node_parser import TokenTextSplitter
 from llama_index.vector_stores.duckdb import DuckDBVectorStore
 from llama_index.core import StorageContext
@@ -6,14 +6,26 @@ from llama_index.llms.ollama import Ollama
 from llama_index.embeddings.ollama import OllamaEmbedding
 import duckdb
 import streamlit as st
+from data_loader import TxtFileLoader, DuckDBLoader, SQLiteLoader
 
 
 # models
 Settings.embed_model = OllamaEmbedding(model_name="nomic-embed-text")
 Settings.llm = Ollama(model="gemma2:2b", temperature=0, request_timeout=360.0)
 
-# load documents into a vector store (DuckDB)
-documents = SimpleDirectoryReader(input_files=["./facts.txt"]).load_data(show_progress=True)
+# UI for data source selection
+st.sidebar.title("Data Source")
+data_source = st.sidebar.selectbox("Select data source", ["Text File", "DuckDB", "SQLite"])
+
+# load documents based on selection
+if data_source == "Text File":
+    loader = TxtFileLoader(file_path="./facts.txt")
+elif data_source == "DuckDB":
+    loader = DuckDBLoader(db_path="ducks.duckdb", table_name="ducks")
+elif data_source == "SQLite":
+    loader = SQLiteLoader(db_path="places.sqlite", table_name="moz_places")
+
+documents = loader.load_documents()
 splitter = TokenTextSplitter(separator="\n", chunk_size=64, chunk_overlap=0)
 
 db_path = "./duck.duckdb"
