@@ -7,3 +7,4 @@ httpx
 requests
 numpy
 pandas
+streamlit
