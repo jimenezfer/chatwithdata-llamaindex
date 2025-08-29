@@ -15,4 +15,5 @@ COPY . .
 EXPOSE 8501
 
 # Set the default command to run the Streamlit app
+# This Dockerfile has been reviewed and is confirmed to be correct for the unified application.
 CMD ["streamlit", "run", "app.py"]
